@@ -1,0 +1,7 @@
+langgraph 
+langchain 
+langchain-community 
+python-dotenv 
+langchain-ollama
+requests
+pydantic
