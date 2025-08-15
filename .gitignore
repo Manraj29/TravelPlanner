@@ -1,0 +1,5 @@
+.env
+.agents/__pycache__/
+__pycache__/
+.tests
+.tools/__pycache__/
