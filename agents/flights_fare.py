@@ -41,8 +41,10 @@ def get_flight_data(state: PlannerState) -> PlannerState:
     print("FLIGHT DATAS", all_flights)
     state.flight_data_raw = all_flights
     state.flights = all_flights
-    return state
 
+    # SELECT best flights from all
+    select_best_flights(state)
+    return state
 
 def select_best_flights(state: PlannerState) -> PlannerState:
     if not state.flights:

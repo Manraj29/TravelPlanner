@@ -12,12 +12,13 @@ def suggest_destinations(state: PlannerState) -> PlannerState:
         Return the results as a JSON array of objects, each with:
         - "name": the destination name (it should be a valid city name, official place name, do not shorten the name or anything give the updated city which is valid)
         - "description": a short paragraph on why it's a good fit
-
+        DO not assume anything, just return a valid JSON string, no python function or any text before of after the json format.
         Only return valid JSON. No extra commentary like Here are three travel destinations based on your preferences....
     """
 
     response = llm.invoke(prompt)
     content = response.content.strip()
+
 
     if content.startswith("```"):
         content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip(), flags=re.DOTALL)

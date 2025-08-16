@@ -13,9 +13,12 @@ class PlannerState(BaseModel):
     attempts: int = 0
     weather_data_raw: Optional[Dict] = None
     flight_data_raw: Optional[Dict] = None
+    hotel_data_raw: Optional[Dict] = None
     source: Optional[str] = None
     depart_date: Optional[str] = None
     trip_days: Optional[int] = None
+    hotel_specs: Optional[str] = None
     return_date: Optional[str] = None
     best_flights: Optional[List[Dict]] = None
+    best_hotels: Optional[List[Dict]] = None
 

@@ -11,11 +11,13 @@ def ask_preferences(state: PlannerState) -> PlannerState:
     source = input("Enter the departure city: ")
     depart_date = input("Enter the departure date in YYYY-MM-DD format: ")
     duration = int(input("Enter the duration of the trip in days (only number): "))
+    hotel_specs = input("Enter your staying preferences (e.g. format, amenities: '', ratings: '', type: '', etc.): ")
 
     state.preferences = user_input.strip() if user_input else None
     state.source = source.strip() if source else None
     state.depart_date = depart_date.strip() if depart_date else None
     state.trip_days = duration if duration else 3
+    state.hotel_specs = hotel_specs.strip() if hotel_specs else None
 
     depart_date_str = state.depart_date
     duration = state.trip_days or 3
@@ -36,4 +38,5 @@ def ask_preferences(state: PlannerState) -> PlannerState:
     print("SOURCE: ", state.source)
     print("DEPART DATE: ", state.depart_date)
     print("RETURN DATE: ", state.return_date)
+    print("HOTEL SPECS: ", state.hotel_specs)
     return state
