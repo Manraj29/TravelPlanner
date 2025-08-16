@@ -55,10 +55,13 @@ flowchart TD
     F --> G[Reviewer Agent]
     G --> H[Final Itinerary plan_trip.md]
 ```
+---
+
 ## 🔮 Future Improvements
 - Store results in a database (SQLite/Redis) instead of markdown.
 - Use forecast-based weather APIs.
 - Add interactive frontend (React + FastAPI).
 - Visualize workflow execution (LangGraph DAG).
 
-## project by msv
+---
+ project by msv
