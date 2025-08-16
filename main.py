@@ -5,6 +5,7 @@ from agents.preferences import ask_preferences
 from agents.destinations import suggest_destinations
 from agents.weather import check_weather
 from agents.flights_fare import get_flight_data
+from agents.reviewer import plan_trip
 
 
 # Create graph
@@ -16,15 +17,21 @@ graph.add_node("suggest_destinations", suggest_destinations)
 graph.add_node("check_weather", check_weather)
 graph.add_node("get_flight_data", get_flight_data)
 graph.add_node("get_hotel_data", get_hotel_data)
+graph.add_node("plan_trip", plan_trip)
+graph.add_node("join_data", lambda state: state)
 
 
 # Define flow
 graph.set_entry_point("ask_preferences")
 graph.add_edge("ask_preferences", "suggest_destinations")
-# graph.add_edge("suggest_destinations", "check_weather") correct 
-# graph.add_edge("check_weather", "get_flight_data") correct 
-graph.add_edge("suggest_destinations", "get_hotel_data")
-graph.add_edge("get_hotel_data", END)
+graph.add_edge("suggest_destinations", "check_weather") 
+graph.add_edge("check_weather", "get_flight_data") 
+graph.add_edge("check_weather", "get_hotel_data")
+graph.add_edge("get_flight_data", "join_data")
+graph.add_edge("get_hotel_data", "join_data")
+graph.add_edge("join_data", "plan_trip")
+
+graph.add_edge("plan_trip", END)
 
 
 # we can also add conditional edge if we get a place with bad weather we can replace the place with another new place.

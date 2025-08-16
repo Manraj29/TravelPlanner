@@ -1,5 +1,6 @@
 from typing import Dict
 from planner_state import PlannerState
+from tools.saving_file import format_to_file, save_to_file
 from tools.weather_api import format_weather, get_weather
 
 MAX_ATTEMPTS = 1
@@ -23,6 +24,15 @@ def check_weather(state: PlannerState) -> PlannerState:
             weather_results[dest] = f"❌ Could not fetch weather for {dest}."
 
     state.weather_data = weather_results
+
+    # convert best_hotels to string:
+    str_weather = ""
+    for dest, weather in state.weather_data.items():
+        str_weather += f"Destination: {dest}\n{weather}\n\n"
+
+    final_text = format_to_file(str_weather)    
+    save_to_file(final_text, "weather_data.md", "weather")
+    
     print("WEATHER STATE: ", state.weather_data)
     return state
 

@@ -11,7 +11,9 @@ def suggest_destinations(state: PlannerState) -> PlannerState:
         Suggest 3 travel destinations (proper city name) for someone with the following preferences: {preferences}.
         Return the results as a JSON array of objects, each with:
         - "name": the destination name (it should be a valid city name, official place name, do not shorten the name or anything give the updated city which is valid)
-        - "description": a short paragraph on why it's a good fit
+        - "description": a short paragraph on why it's a good fit.
+        - "details": this will be a string, details about the destination, including various attractions, activities, and other relevant information. It must be a string in brief 3-4 lines.
+        
         DO not assume anything, just return a valid JSON string, no python function or any text before of after the json format.
         Only return valid JSON. No extra commentary like Here are three travel destinations based on your preferences....
     """
@@ -31,7 +33,7 @@ def suggest_destinations(state: PlannerState) -> PlannerState:
 
         # Store names for later use (e.g. weather)
         state.destinations = keys
-        state.dest_desc = [f"{d['name']} - {d['description']}" for d in destinations_json]
+        state.dest_desc = [f"{d['name']} - Description: {d['description']} Details: {d['details']}" for d in destinations_json]
 
         print("Parsed Destinations:", keys)
 

@@ -2,6 +2,7 @@ import datetime
 from planner_state import PlannerState
 from tools.hotel_api import format_hotels, get_hotels, get_region_id
 from langchain_ollama import ChatOllama
+from tools.saving_file import save_to_file, format_to_file
 
 def get_hotel_data(state: PlannerState) -> PlannerState:
     source = state.source
@@ -16,8 +17,6 @@ def get_hotel_data(state: PlannerState) -> PlannerState:
     if not source:
         print("❌ No source provided.")
         return state
-
-    llm = ChatOllama(model="llama3.2:3b")
 
     for dest in destinations:
         dest_id = get_region_id(dest)
@@ -56,7 +55,7 @@ def select_best_hotels(state: PlannerState) -> PlannerState:
         Here are the available hotel options in JSON format:
         {hotels}
 
-        Based on these preferences, select the best 1 or 2 hotel options.
+        Based on these preferences, select the best 1 or 2 hotel options. Just return the options nothing else from your own. Frame the options properly.
         For each, summarize the hotel name, price, rating, ammenities, and location.
         Be clear and concise. DO not suggest any other, or add anything else. Just the best options from the above provided hotels.
         """
@@ -67,6 +66,14 @@ def select_best_hotels(state: PlannerState) -> PlannerState:
             best_hotel_summary[dest] = response
         except Exception as e:
             best_hotel_summary[dest] = f"⚠️ Error selecting best hotels: {e}"
-
+        
     state.best_hotels = best_hotel_summary
+
+    # convert best_hotels to string:
+    str_hotels = ""
+    for dest, hotels in best_hotel_summary.items():
+        str_hotels += f"Destination: {dest}\n{hotels}\n\n"
+
+    final_text = format_to_file(str_hotels)    
+    save_to_file(final_text, "best_hotels.md", "hotel_fare")
     return state

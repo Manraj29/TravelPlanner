@@ -3,6 +3,8 @@ from planner_state import PlannerState
 from tools.flight_api import format_flights, get_flights, get_iata_code
 from langchain_ollama import ChatOllama
 
+from tools.saving_file import format_to_file, save_to_file
+
 def get_flight_data(state: PlannerState) -> PlannerState:
 
     source = state.source
@@ -32,7 +34,8 @@ def get_flight_data(state: PlannerState) -> PlannerState:
                 Please provide the IATA code for {dest}. Just return the valid official IATA code. Nothing else.
                 """
             result = llm.invoke(prompt)
-            return_date = result['output']
+            # return_date = result['output']
+            dest_iata = result['output']
             continue
 
         flights = get_flights(source_iata, dest_iata, depart_date, return_date)
@@ -70,7 +73,7 @@ def select_best_flights(state: PlannerState) -> PlannerState:
 
         Based on these preferences, select the best 1 or 2 flight options.
         For each, summarize the airline, price, duration, stops, and departure time.
-
+        Return only the top 1 or 2 options in bullet format. Do not suggest new options. Only summarize the best from the provided JSON.
         Be clear and concise.
         """
 
@@ -82,4 +85,14 @@ def select_best_flights(state: PlannerState) -> PlannerState:
             best_flights_summary[dest] = f"⚠️ Error selecting best flights: {e}"
 
     state.best_flights = best_flights_summary
+
+    # convert best_flights to string:
+    str_flights = ""
+    for dest, flights in best_flights_summary.items():
+        str_flights += f"Destination: {dest}\n{flights}\n\n"
+
+    final_text = format_to_file(str_flights)    
+    save_to_file(final_text, "best_flights.md", "flights_fare")
+
+
     return state
